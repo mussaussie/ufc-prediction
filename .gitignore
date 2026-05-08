@@ -1,0 +1,35 @@
+# ── Python ────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.env
+.venv/
+venv/
+*.ipynb_checkpoints/
+
+# ── Raw / large data files ────────────────────
+data/UFC.csv
+data/event_details.csv
+data/fight_details.csv
+data/fighter_details.csv
+data/mw_raw_combined.csv
+data/mw_best_prediction_dataset.csv
+data/ufcscraper_cache/
+data/ufcscraper_live/
+
+# ── Old / intermediate model files ───────────
+models/xgb_ufc_model.joblib
+
+# ── Markdown docs (personal reference only) ──
+EXPLANATION.md
+LINKEDIN_POST.md
+CLAUDE.md
+AGENTS.md
+VERTEX_AI_GUIDE.md
+
+# ── OS / editor ───────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

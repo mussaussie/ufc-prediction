@@ -1,0 +1,17 @@
+[
+  "slpm_diff",
+  "str_acc_diff",
+  "str_def_diff",
+  "td_avg_diff",
+  "td_acc_diff",
+  "td_def_diff",
+  "sub_avg_diff",
+  "win_streak_diff",
+  "finish_rate_diff",
+  "age_diff",
+  "reach_diff",
+  "days_diff",
+  "title_fight",
+  "rounds",
+  "weight_class_lbs"
+]

@@ -1,0 +1,27 @@
+
+======================================================
+     UFC 328 — FIGHT PREDICTION RESULT
+     Khamzat Chimaev vs Sean Strickland (MW Title)
+     May 9, 2026 | Prudential Center, Newark NJ
+======================================================
+
+  PREDICTED WINNER : Khamzat Chimaev
+
+  Chimaev Win Probability    : 85.5%
+  Strickland Win Probability : 14.5%
+  Model Confidence           : 85.5%
+
+------------------------------------------------------
+  BENCHMARK COMPARISON
+  Elo Model      : Chimaev 79.0%  | Strickland 21.0%
+  Betting Odds   : Chimaev ~85%   | Strickland ~15%
+  Our Model (LR) : Chimaev 85.5%  | Strickland 14.5%
+------------------------------------------------------
+  KEY FACTORS DRIVING PREDICTION
+  TD Avg Diff    : +4.86  (Chimaev elite grappler)
+  Sub Avg Diff   : +1.70  (Chimaev major sub threat)
+  SLpM Diff      : -2.01  (Strickland higher volume)
+  Win Streak     : +11   (Chimaev 12-0 streak)
+  Finish Rate    : +0.45  (Chimaev 80% vs Strickland 35%)
+  Age Diff       : -2.9  (Chimaev 2.9yr younger)
+======================================================
