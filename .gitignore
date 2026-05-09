@@ -24,6 +24,8 @@ models/xgb_ufc_model.joblib
 # ── Markdown docs (personal reference only) ──
 EXPLANATION.md
 LINKEDIN_POST.md
+LINKEDIN_POST_CASUAL.md
+QA_PREP.md
 CLAUDE.md
 AGENTS.md
 VERTEX_AI_GUIDE.md

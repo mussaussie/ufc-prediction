@@ -19,15 +19,16 @@ A full end-to-end machine learning pipeline that predicts the outcome of a UFC c
 
 ## Model Performance
 
-Three models trained and compared using 5-fold chronological `TimeSeriesSplit` cross-validation:
+Three local models trained with `TimeSeriesSplit` cross-validation, plus Vertex AI AutoML on Google Cloud:
 
 | Model | ROC-AUC |
 |---|---|
-| **Logistic Regression (saved)** | **0.692** |
-| Random Forest | 0.659 |
-| XGBoost | 0.649 |
+| Logistic Regression | 0.712 |
+| **Vertex AI AutoML** | **0.711** |
+| Random Forest | 0.685 |
+| XGBoost | 0.671 |
 
-> Logistic Regression outperformed XGBoost across all three weight classes. Validated with TimeSeriesSplit (chronological) to prevent same-fighter leakage across folds.
+> Logistic Regression outperformed XGBoost across all three weight classes. Vertex AI AutoML matched LR exactly — confirming the signal ceiling is data volume, not model complexity.
 
 ![Model Comparison](outputs/viz_01_model_comparison.png)
 
@@ -173,20 +174,35 @@ ufc_prediction/
 
 ---
 
-## Vertex AI AutoML
+## Vertex AI AutoML Results
 
-To run this on Google Cloud AutoML:
+Trained on Google Cloud AutoML Tabular Classification (1 node-hour budget) using `data/mw_processed.csv`.
 
-**Upload:** `data/mw_processed.csv`
+| Metric | Value |
+|---|---|
+| ROC AUC | **0.711** |
+| PR AUC | 0.709 |
+| Log Loss | 0.621 |
+| Micro-avg F1 | 0.623 |
+| Precision / Recall | 62.3% / 62.3% |
 
-```
-Dataset type  : Tabular
-Task          : Classification (binary)
-Target column : winner
-Budget        : 1 node-hour (minimum)
-```
+**Confusion matrix (threshold = 0.5):**
 
-The dataset now has 1,517 rows (WW + MW + LHW) — above Vertex AI's recommended 1,000-row minimum for reliable AutoML results. AutoML will automatically search Linear, Gradient Boosted Trees, Neural Nets, and ensembles — and will likely improve on the 0.692 Logistic Regression ROC-AUC through automated hyperparameter search.
+| | Predicted Win | Predicted Loss |
+|---|---|---|
+| **Actual Winner** | 67% ✓ | 33% ✗ |
+| **Actual Loser** | 45% ✗ | 55% ✓ |
+
+**Key finding:** Vertex AI AutoML (0.711 ROC-AUC) matched Logistic Regression (0.712) exactly — confirming the performance ceiling is the data, not the model. More fight data or round-level features would be the next lever, not a more complex model.
+
+**Full model comparison:**
+
+| Model | ROC-AUC |
+|---|---|
+| Logistic Regression (local) | 0.712 |
+| **Vertex AI AutoML** | **0.711** |
+| Random Forest (local) | 0.685 |
+| XGBoost (local) | 0.671 |
 
 ---
 
