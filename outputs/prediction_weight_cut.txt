@@ -1,0 +1,51 @@
+
+============================================================
+  UFC 328 — WEIGHT-CUT SENSITIVITY ANALYSIS
+  Khamzat Chimaev vs Sean Strickland (MW Title)
+  May 9, 2026 | Prudential Center, Newark NJ
+============================================================
+
+  REPORTED CUTS
+  Chimaev    : 46 lbs  (~210+ lbs to 185 lbs) -- EXTREME
+  Strickland : 15 lbs  (~200 lbs to 185 lbs) -- Normal for MW
+
+------------------------------------------------------------
+  BASELINE PREDICTION (no weight-cut adjustment)
+  Chimaev    : 85.5%
+  Strickland : 14.5%
+  Winner     : Chimaev
+
+------------------------------------------------------------
+  WEIGHT-CUT ADJUSTED PREDICTION
+  Chimaev    : 81.7%
+  Strickland : 18.3%
+  Winner     : Chimaev
+
+------------------------------------------------------------
+  PENALTY APPLIED (Chimaev — 46 lb cut)
+  Grappling output  : -28%  (TD avg, sub avg, finish rate)
+  Striking output   : -10%   (SLpM)
+  Defence/accuracy  : -3%   (str acc, str def, TD def)
+
+  PENALTY APPLIED (Strickland — 15 lb cut)
+  Grappling output  : -3%
+  Striking output   : -1%
+  Defence/accuracy  : -0%
+
+------------------------------------------------------------
+  KEY STAT ADJUSTMENTS
+  Stat                  Chimaev raw  Chimaev adj  Strickland adj
+  --------------------------------------------------------------
+  td_avg                       5.29         3.81            0.42
+  sub_avg                      1.80         1.30            0.10
+  finish_rate                  0.80         0.58            0.34
+  slpm                         5.24         4.72            7.18
+
+------------------------------------------------------------
+  ACTUAL FIGHT RESULT (May 9, 2026)
+  Winner     : Sean Strickland
+  Key factor : Chimaev's extreme weight cut impaired
+               grappling output — his primary weapon
+
+  MODEL VERDICT: Still picks Chimaev (penalty not enough to flip)
+============================================================

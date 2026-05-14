@@ -1,8 +1,9 @@
 # UFC 328 Fight Prediction — ML Pipeline
 
 **Khamzat Chimaev vs Sean Strickland | Middleweight Title | May 9, 2026**
+**Result: Sean Strickland won. Model predicted Chimaev at 85.5%.**
 
-A full end-to-end machine learning pipeline that predicts the outcome of a UFC championship fight using real fight data, chronological feature engineering, and comparative tabular classification models.
+A full end-to-end machine learning pipeline that predicts the outcome of a UFC championship fight using real fight data, chronological feature engineering, and comparative tabular classification models. Built before the fight — post-fight analysis of where the model fell short included below.
 
 ---
 
@@ -14,6 +15,31 @@ A full end-to-end machine learning pipeline that predicts the outcome of a UFC c
 | Sean Strickland (Challenger, 30-7) | 14.5% |
 
 ![Prediction Result](outputs/viz_02_prediction_result.png)
+
+---
+
+## Post-Fight Result — May 9, 2026
+
+**Sean Strickland won. The model was wrong.**
+
+The model assigned Chimaev 85.5% — he lost.
+
+**Why the model missed it — weight cut:**
+Chimaev reportedly cut ~46 lbs to make the 185 lb middleweight limit, walking into fight week well above 210 lbs. Extreme weight cuts of this magnitude impair reaction time, chin durability, and grappling output — Chimaev's core weapons. The model had zero signal for this because no weight cut feature was included in the pipeline.
+
+**What the model had:**
+- Historical per-fight stats (striking, grappling, finish rate, streaks)
+- Age and reach differentials
+- Days since last fight
+
+**What the model was missing:**
+- Fighter's natural walk-around weight vs. weight class limit
+- Size of the cut as a fight-week stress indicator
+- History of difficult cuts (a known Chimaev issue moving down to 185)
+
+This is a legitimate model gap, not a calibration failure. The 14.5% the model gave Strickland reflected real uncertainty — the prediction was directionally wrong, not nonsensically so. Adding a weight cut differential feature is the clearest next lever for improving this model.
+
+> **Weight-cut sensitivity experiment:** After applying a 28% grappling penalty to Chimaev and 3% to Strickland, the model moves from 85.5% → 81.7% for Chimaev. It does not flip. See findings below.
 
 ---
 
@@ -210,11 +236,36 @@ Trained on Google Cloud AutoML Tabular Classification (1 node-hour budget) using
 
 1. **Historical averages are taken from the available dataset, not rebuilt from full round-level pre-fight snapshots.** The custom `win_streak` and `finish_rate` fields are chronological, but some source stat columns may still reflect dataset-level limitations.
 2. **The training pool uses nearby male divisions, not only middleweight.** That improves sample size but introduces some cross-division noise.
-3. **No explicit style-matchup, camp, injury, or late-notice signal.** Important real-world factors remain outside the model.
-4. **`days_since_last` for a fighter's first tracked bout is treated as 0.** That is a practical placeholder, not a true layoff value.
-5. **Red corner structural bias remains in the data.** Higher-profile fighters are often assigned red corner and win more often historically.
+3. **No weight cut signal.** Fighter natural weight vs. weight class limit is not modelled. This was the primary failure mode for UFC 328 — Chimaev's ~46 lb cut was not captured.
+4. **No explicit style-matchup, camp, injury, or late-notice signal.** Important real-world factors remain outside the model.
+5. **`days_since_last` for a fighter's first tracked bout is treated as 0.** That is a practical placeholder, not a true layoff value.
+6. **Red corner structural bias remains in the data.** Higher-profile fighters are often assigned red corner and win more often historically.
 
 ROC-AUC of about 0.69 is still within the broad range often seen in public UFC prediction work, but this project should be viewed as a practical ML experiment rather than a production betting model.
+
+---
+
+## Weight-Cut Sensitivity Experiment (Post-Fight)
+
+Script: `scripts/05_weight_cut_predict.py`
+
+Reported cuts: Chimaev 46 lbs (extreme), Strickland 15 lbs (normal MW).
+
+A 28% penalty was applied to Chimaev's grappling stats (TD avg, submission avg, finish rate) and 3% to Strickland's, reflecting the physiological difference between an extreme cut and a normal one.
+
+| Scenario | Chimaev | Strickland |
+|---|---|---|
+| Baseline (no penalty) | 85.5% | 14.5% |
+| Weight-cut adjusted | 81.7% | 18.3% |
+| **Actual result** | **Lost** | **Won** |
+
+**Finding:** The model does not flip even with a 28% grappling penalty. Chimaev's raw TD avg (5.29 vs 0.43) and sub avg (1.80 vs 0.10) differentials are so large that a cut-fatigue multiplier alone cannot overcome them. This reveals a structural model limitation:
+
+- Historical career averages are a poor proxy for fight-night physical state
+- The model cannot learn "this fighter cuts 46 lbs and it will cost them" from fight-result labels alone
+- Accurately capturing weight cut effect would require round-level output data (checking whether the grappling rate drops in rounds 3-5) rather than career summary stats
+
+The correct prediction would likely require a much larger penalty (~50-60% grappling reduction) or direct round-level fatigue signals — neither of which are available in public UFC summary datasets.
 
 ---
 
